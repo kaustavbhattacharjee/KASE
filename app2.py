@@ -85,13 +85,23 @@ app.layout = html.Div([
 def update_graph(year,weather):
     filename = "visualizations/task2_"+str(weather)+"_"+str(year)+"_line.csv"
     title = "Mean Power Consumption across different "+str(weather)+"("+str(year)+")"
-    xaxis_title_dict = {"temperature":"Temperature(in F)","humidity":"Humidity(g/m3)"}
+    xaxis_title_dict = {"temperature":"Temperature(in F)","humidity":"Humidity(g/m3)"} #used in both visualizations
     df = pd.read_csv(filename, names=[str(weather), 'power'])
     fig1 = px.line(df, x=str(weather), y='power', title=title)
     fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
     fig1.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
     fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
-    return [fig1,fig1]
+
+    filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_box.csv"
+    title = "Power Consumption across different " + str(weather) + " (Box-Plot)(" + str(year) + ")"
+    xaxis_tick_dict = {"temperature": dict(tickmode='array', tickvals=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90],ticktext=['(-10 to 0)', '(0 to 10)', '(10 to 20)', '(20 to 30)', '(30 to 40)','(40 to 50)', '(50 to 60)', '(60 to 70)', '(70 to 80)', '(80 to 90)','(90 to 100)']), "humidity": dict(tickmode = 'array', tickvals = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1.0], ticktext = ['(-0.1 to 0)', '(0 to 0.1)', '(0.1 to 0.2)', '(0.2 to 0.3)', '(0.3 to 0.4)', '(0.4 to 0.5)','(0.5 to 0.6)','(0.6 to 0.7)','(0.7 to 0.8)','(0.8 to 0.9)', '(0.9 to 1)'])}
+    df = pd.read_csv(filename, names=[str(weather), 'power'])
+    fig2 = px.box(df, x=str(weather), y='power',title=title)
+    fig2.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+    fig2.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+    fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)",xaxis=xaxis_tick_dict[str(weather)])
+
+    return [fig1,fig2]
 
 
 
