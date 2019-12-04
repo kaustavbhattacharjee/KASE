@@ -19,6 +19,7 @@ def merger(fol_name, year):
     df_elec = pd.read_csv(fol_name + "/" + fol_name + year + "_electric.csv")
     df_wea = home_weather_reader(fol_name, year)
     df = pd.merge(df_elec, df_wea, on="Date", how="outer")
+    df.sort_values(by=["Date"], inplace=True)
     return df
 
 def roundup_v1(x):
