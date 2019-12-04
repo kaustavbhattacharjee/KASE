@@ -6,12 +6,11 @@ from dash.exceptions import PreventUpdate
 from readers import *
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
-import csv,os
+import csv, os
 from pathlib import Path
 import plotly.express as px
 import pandas as pd
-import math
-from abs_path import return_abs_path,return_abs_path2
+from abs_path import return_abs_path, return_abs_path2
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -22,12 +21,23 @@ app_options = {
     "HomeB": ["Grid [kW]", "AC [kW]", "Furnace [kW]", "Utility Rm + Basement Bath [kW]", "Home Office (R) [kW]",
               "Home office [kW]", "Guest Bedroom / Media Room [kW]"],
     "HomeC": ["LivingRoomOutlets [kW]", "House overall [kW]", "Furnace 1 [kW]", "Furnace 2 [kW]", "Home office [kW]",
-              "Fridge [kW]", "Wine cellar [kW]", "Living room [kW]"]
+              "Fridge [kW]", "Wine cellar [kW]", "Living room [kW]"],
+    "HomeF": ["WaterHeater [kW]", "Refrigerator [kW]", "Furnace [kW]", "Family_Rm [kW]", "Dryer [kW]", "WaterHeater1 "
+                                                                                                       "[kW]",
+              "WaterHeater2 [kW]", "WaterHeater3 [kW]"],
+    "HomeG": ["HVAC air handler [kW]", "Water pump [kW]", "Range oven [kW]", "Electronics closet [kW]", "Hot tub [kW]",
+              "Wall oven [kW] ", "ERV + humidifier + fountain [kW]", "DL bedroom outlets [kW]"],
+    "HomeH": ["Kitchen Outlet/Espresso (32) [kW]", "Dishwasher (17) [kW]", "Kitchen (39) [kW]", "Oven (7+5) [kW]",
+              "Dryer (36+34) [kW]", "Basement/Dehumidifier (31) [kW]", "Dining Room (15) [kW]",
+              "1st Floor Bedroom (37) [kW]"]
 }
 year_options = {
     "HomeA": ["2014", "2015", "2016"],
     "HomeB": ["2014", "2015", "2016"],
-    "HomeC": ["2014", "2015", "2016"]
+    "HomeC": ["2014", "2015", "2016"],
+    "HomeF": ["2014", "2015", "2016"],
+    "HomeG": ["2015", "2016"],
+    "HomeH": ["2016"]
 }
 
 color_list = [
@@ -44,23 +54,23 @@ color_list = [
 ]
 app.title = "Energy Consumption -  Team KASE"
 app.layout = html.Div([
+    html.H1(children="A Study on Energy Consumption - Team KAS&E", style={'textAlign': 'center'}),
+    html.Hr(),
     html.Div([
-        html.H1(children="A Study on Energy Consumption - Team KAS&E", style={'textAlign': 'center'}),
-        html.Hr(),
         html.H2("Task2"),
-        html.Div(children="This task studies the power consumption of apartments across different weather parameters like temperature, humidity and weather summary. This study contains data of 114 apartments across three years (2014, 2015, 2016)", style={'font-style': 'normal'}),
+        html.Div(children="This task studies the power consumption of apartments across different weather parameters "
+                          "like temperature, humidity and weather summary. This study contains data of 114 apartments "
+                          "across three years (2014, 2015, 2016)", style={'font-style': 'normal'}),
         html.Br(),
         html.Div(children="Years:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-year-task2",
-            style={'color': '#000000'},
+            style={'color': '#000000', "width": "300px"},
             options=[
-            {'label': '2014', 'value': '2014'},
-            {'label': '2015', 'value': '2015'},
-            {'label': '2016', 'value': '2016'}
-        ],
-            value="2014"
-        ),
+                {'label': '2014', 'value': '2014'},
+                {'label': '2015', 'value': '2015'},
+                {'label': '2016', 'value': '2016'}],
+            value="2014"),
         html.Br(),
         html.Div(children="Weather Conditions:", style={'font-style': 'italic'}),
         dcc.RadioItems(
@@ -70,8 +80,7 @@ app.layout = html.Div([
                 {'label': 'Humidity', 'value': 'humidity'},
                 {'label': 'Weather Summary (snowy, rainy, clear ...)', 'value': 'summary'}
             ],
-            value="temperature"
-        ),
+            value="temperature"),
         html.Br(),
         html.Hr(style={'border-style': 'dotted'}),
         html.H4("Primary Visualization"),
@@ -88,31 +97,39 @@ app.layout = html.Div([
             )
         ]),
         html.Br(),
+    ]),
+    html.Div([
         html.Hr(),
         html.H2("Task4"),
-        html.Div(children="This task studies the power consumption of different appliances across 7 homes. This study contains data of appliances like furnace, refrigenerator etc., across three years (2014, 2015, 2016)", style={'font-style': 'normal'}),
+        html.Div(children="This task studies the power consumption of different appliances across 7 homes. This study "
+                          "contains data of appliances like furnace, refrigerator etc., across three years (2014, "
+                          "2015, 2016)", style={'font-style': 'normal'}),
         html.Br(),
+
         html.Div(children="Years:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-year",
-            style={'color': '#000000'},
+            style={'color': '#000000', 'width': '300px'},
             value="2016"
         ),
         html.Div(children="Appliances:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-apps",
-            style={'color': '#000000'},
+            style={'color': '#000000', 'width': '1200px'},
             multi=True,
         ),
         html.Div(children="Homes:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-homes",
-            style={'color': '#000000'},
+            style={'color': '#000000', 'width': '300px'},
             value='HomeA',
             options=[
                 {'label': 'Home A', 'value': 'HomeA'},
                 {'label': 'Home B', 'value': 'HomeB'},
-                {'label': 'Home C', 'value': 'HomeC'}
+                {'label': 'Home C', 'value': 'HomeC'},
+                {'label': 'Home F', 'value': 'HomeF'},
+                {'label': 'Home G', 'value': 'HomeG'},
+                {'label': 'Home H', 'value': 'HomeH'}
             ]
         ),
         html.Div(children="Weather Conditions:", style={'font-style': 'italic'}),
@@ -132,8 +149,8 @@ app.layout = html.Div([
             dcc.Graph(
                 id='Vis-1',
             ),
-        html.Br(),
-        html.H4("Alternative Visualization"),
+            html.Br(),
+            html.H4("Alternative Visualization"),
             dcc.Graph(
                 id='Vis-2',
             )
@@ -200,7 +217,7 @@ def update_graph(home_name, year, apps, weather):
                     name=app,
                     mode='markers',
                     marker_color=color_list[color_count],
-                    opacity = 0.5
+                    opacity=0.5
                 ), row=1, col=1,
             )
             fig_2.add_trace(
@@ -211,7 +228,7 @@ def update_graph(home_name, year, apps, weather):
                     mode='markers',
                     marker_color=color_list[color_count],
                     opacity=0.5,
-                    showlegend = False
+                    showlegend=False
                 ), row=1, col=2
             )
             fig_2.add_trace(
@@ -227,15 +244,17 @@ def update_graph(home_name, year, apps, weather):
             )
             color_count += 1
 
-    fig_1.update_layout(title='Appliance Power Consumption across Weather Conditions ' + home_name + ' ' + year)
+    fig_1.update_layout(title='Appliance Power Consumption of ' + home_name + ' ' + year)
     fig_1.update_xaxes(title_text="Months", nticks=6)
     fig_1.update_yaxes(title_text=weather, secondary_y=True)
     fig_1.update_yaxes(title_text="Power Consumption", secondary_y=False)
     fig_2.update_xaxes(title_text="Temperature (C)", row=1, col=1)
     fig_2.update_xaxes(title_text="Pressure(mBar)", row=1, col=2)
     fig_2.update_xaxes(title_text="WindSpeed(kmph)", row=1, col=3)
+    fig_2.update_layout(title='Appliance Power Consumption of ' + home_name + ' ' + year)
 
     return fig_1, fig_2
+
 
 @app.callback(
     [Output('Vis-2-1', 'figure'),
@@ -243,46 +262,68 @@ def update_graph(home_name, year, apps, weather):
     [Input("drop-down-year-task2", "value"),
      Input("radio-weather-task2", "value")],
 )
-def update_graph(year,weather):
-    if(weather == "summary"):
+def update_graph(year, weather):
+    if (weather == "summary"):
         filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_bar.csv"
         title = "Mean Power Consumption across different weather " + str(weather) + "(" + str(year) + ")"
         xaxis_title_dict = {"summary": "Weather Summary"}  # used in both visualizations
         df = pd.read_csv(filename, names=[str(weather), 'power'])
         fig1 = px.bar(df, x=str(weather), y='power', title=title, text='power')
-        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
+        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],
+                           yaxis_title="Power(kW)")
 
         filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_box.csv"
         title = "Power Consumption across different " + str(weather) + " (Box-Plot)(" + str(year) + ")"
         df = pd.read_csv(filename, names=[str(weather), 'power'])
         fig2 = px.box(df, x=str(weather), y='power', points="all", title=title)
-        fig2.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig2.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
+        fig2.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig2.update_yaxes(title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],
+                           yaxis_title="Power(kW)")
 
         return [fig1, fig2]
     else:
-        filename = "visualizations/task2_"+str(weather)+"_"+str(year)+"_line.csv"
-        title = "Mean Power Consumption across different "+str(weather)+"("+str(year)+")"
-        xaxis_title_dict = {"temperature":"Temperature(in F)","humidity":"Humidity(g/m3)"} #used in both visualizations
+        filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_line.csv"
+        title = "Mean Power Consumption across different " + str(weather) + "(" + str(year) + ")"
+        xaxis_title_dict = {"temperature": "Temperature(in F)",
+                            "humidity": "Humidity(g/m3)"}  # used in both visualizations
         df = pd.read_csv(filename, names=[str(weather), 'power'])
         fig1 = px.line(df, x=str(weather), y='power', title=title)
-        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
-        fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
+        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],
+                           yaxis_title="Power(kW)")
 
         filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_box.csv"
         title = "Power Consumption across different " + str(weather) + " (Box-Plot)(" + str(year) + ")"
-        xaxis_tick_dict = {"temperature": dict(tickmode='array', tickvals=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90],ticktext=['(-10 to 0)', '(0 to 10)', '(10 to 20)', '(20 to 30)', '(30 to 40)','(40 to 50)', '(50 to 60)', '(60 to 70)', '(70 to 80)', '(80 to 90)','(90 to 100)']), "humidity": dict(tickmode = 'array', tickvals = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1.0], ticktext = ['(-0.1 to 0)', '(0 to 0.1)', '(0.1 to 0.2)', '(0.2 to 0.3)', '(0.3 to 0.4)', '(0.4 to 0.5)','(0.5 to 0.6)','(0.6 to 0.7)','(0.7 to 0.8)','(0.8 to 0.9)', '(0.9 to 1)'])}
+        xaxis_tick_dict = {"temperature": dict(tickmode='array', tickvals=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+                                               ticktext=['(-10 to 0)', '(0 to 10)', '(10 to 20)', '(20 to 30)',
+                                                         '(30 to 40)', '(40 to 50)', '(50 to 60)', '(60 to 70)',
+                                                         '(70 to 80)', '(80 to 90)', '(90 to 100)']),
+                           "humidity": dict(tickmode='array',
+                                            tickvals=[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+                                            ticktext=['(-0.1 to 0)', '(0 to 0.1)', '(0.1 to 0.2)', '(0.2 to 0.3)',
+                                                      '(0.3 to 0.4)', '(0.4 to 0.5)', '(0.5 to 0.6)', '(0.6 to 0.7)',
+                                                      '(0.7 to 0.8)', '(0.8 to 0.9)', '(0.9 to 1)'])}
         df = pd.read_csv(filename, names=[str(weather), 'power'])
-        fig2 = px.box(df, x=str(weather), y='power',title=title)
-        fig2.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig2.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
-        fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)",xaxis=xaxis_tick_dict[str(weather)])
+        fig2 = px.box(df, x=str(weather), y='power', title=title)
+        fig2.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig2.update_yaxes(title_font=dict(family='Georgia', color='black'),
+                          tickfont=dict(family='Georgia', color='black'))
+        fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],
+                           yaxis_title="Power(kW)", xaxis=xaxis_tick_dict[str(weather)])
 
-        return [fig1,fig2]
+        return [fig1, fig2]
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
