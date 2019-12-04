@@ -1,0 +1,15 @@
+﻿Appliance,Power
+FurnaceHRV [kW],3422.914041
+DuctHeaterHRV [kW],2913.551834
+MasterOutlets [kW]_x,1654.402561
+KitchenLights [kW],1291.568402
+FridgeRange [kW],1215.421493
+CellarOutlets [kW],1131.244692
+BedroomOutlets [kW],964.3017501
+DisposalDishwasher [kW],461.8395856
+MasterLights [kW],379.9205083
+GarageMudroomLights [kW],314.6114428
+ElectricRange [kW],284.7995683
+BedroomLights [kW],245.8679683
+WashingMachine [kW],175.26823
+Dryer [kW],99.36745668
