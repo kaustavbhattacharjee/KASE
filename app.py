@@ -6,6 +6,12 @@ from dash.exceptions import PreventUpdate
 from readers import *
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
+import csv,os
+from pathlib import Path
+import plotly.express as px
+import pandas as pd
+import math
+from abs_path import return_abs_path,return_abs_path2
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -36,21 +42,72 @@ color_list = [
     '#bcbd22',  # curry yellow-green
     '#17becf'  # blue-teal
 ]
-
+app.title = "Energy Consumption -  Team KASE"
 app.layout = html.Div([
     html.Div([
-        html.Label("Task4"),
-
+        html.H1(children="A Study on Energy Consumption - Team KAS&E", style={'textAlign': 'center'}),
+        html.Hr(),
+        html.H2("Task2"),
+        html.Div(children="This task studies the power consumption of apartments across different weather parameters like temperature, humidity and weather summary. This study contains data of 114 apartments across three years (2014, 2015, 2016)", style={'font-style': 'normal'}),
+        html.Br(),
+        html.Div(children="Years:", style={'font-style': 'italic'}),
+        dcc.Dropdown(
+            id="drop-down-year-task2",
+            style={'color': '#000000'},
+            options=[
+            {'label': '2014', 'value': '2014'},
+            {'label': '2015', 'value': '2015'},
+            {'label': '2016', 'value': '2016'}
+        ],
+            value="2014"
+        ),
+        html.Br(),
+        html.Div(children="Weather Conditions:", style={'font-style': 'italic'}),
+        dcc.RadioItems(
+            id="radio-weather-task2",
+            options=[
+                {'label': 'Temperature', 'value': 'temperature'},
+                {'label': 'Humidity', 'value': 'humidity'},
+                {'label': 'Weather Summary (snowy, rainy, clear ...)', 'value': 'summary'}
+            ],
+            value="temperature"
+        ),
+        html.Br(),
+        html.Hr(style={'border-style': 'dotted'}),
+        html.H4("Primary Visualization"),
+        html.Div([
+            dcc.Graph(
+                id='Vis-2-1',
+            )
+        ]),
+        html.Br(),
+        html.H4("Alternative Visualization"),
+        html.Div([
+            dcc.Graph(
+                id='Vis-2-2',
+            )
+        ]),
+        html.Br(),
+        html.Hr(),
+        html.H2("Task4"),
+        html.Div(children="This task studies the power consumption of different appliances across 7 homes. This study contains data of appliances like furnace, refrigenerator etc., across three years (2014, 2015, 2016)", style={'font-style': 'normal'}),
+        html.Br(),
+        html.Div(children="Years:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-year",
+            style={'color': '#000000'},
             value="2016"
         ),
+        html.Div(children="Appliances:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-apps",
+            style={'color': '#000000'},
             multi=True,
         ),
+        html.Div(children="Homes:", style={'font-style': 'italic'}),
         dcc.Dropdown(
             id="drop-down-homes",
+            style={'color': '#000000'},
             value='HomeA',
             options=[
                 {'label': 'Home A', 'value': 'HomeA'},
@@ -58,6 +115,7 @@ app.layout = html.Div([
                 {'label': 'Home C', 'value': 'HomeC'}
             ]
         ),
+        html.Div(children="Weather Conditions:", style={'font-style': 'italic'}),
         dcc.RadioItems(
             id="radio-weather",
             options=[
@@ -67,10 +125,15 @@ app.layout = html.Div([
             ],
             value="temperature"
         ),
+        html.Br(),
+        html.Hr(style={'border-style': 'dotted'}),
+        html.H4("Primary Visualization"),
         html.Div([
             dcc.Graph(
                 id='Vis-1',
             ),
+        html.Br(),
+        html.H4("Alternative Visualization"),
             dcc.Graph(
                 id='Vis-2',
             )
@@ -174,6 +237,52 @@ def update_graph(home_name, year, apps, weather):
 
     return fig_1, fig_2
 
+@app.callback(
+    [Output('Vis-2-1', 'figure'),
+     Output("Vis-2-2", "figure")],
+    [Input("drop-down-year-task2", "value"),
+     Input("radio-weather-task2", "value")],
+)
+def update_graph(year,weather):
+    if(weather == "summary"):
+        filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_bar.csv"
+        title = "Mean Power Consumption across different weather " + str(weather) + "(" + str(year) + ")"
+        xaxis_title_dict = {"summary": "Weather Summary"}  # used in both visualizations
+        df = pd.read_csv(filename, names=[str(weather), 'power'])
+        fig1 = px.bar(df, x=str(weather), y='power', title=title, text='power')
+        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
+
+        filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_box.csv"
+        title = "Power Consumption across different " + str(weather) + " (Box-Plot)(" + str(year) + ")"
+        df = pd.read_csv(filename, names=[str(weather), 'power'])
+        fig2 = px.box(df, x=str(weather), y='power', points="all", title=title)
+        fig2.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig2.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
+
+        return [fig1, fig2]
+    else:
+        filename = "visualizations/task2_"+str(weather)+"_"+str(year)+"_line.csv"
+        title = "Mean Power Consumption across different "+str(weather)+"("+str(year)+")"
+        xaxis_title_dict = {"temperature":"Temperature(in F)","humidity":"Humidity(g/m3)"} #used in both visualizations
+        df = pd.read_csv(filename, names=[str(weather), 'power'])
+        fig1 = px.line(df, x=str(weather), y='power', title=title)
+        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+        fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)")
+
+        filename = "visualizations/task2_" + str(weather) + "_" + str(year) + "_box.csv"
+        title = "Power Consumption across different " + str(weather) + " (Box-Plot)(" + str(year) + ")"
+        xaxis_tick_dict = {"temperature": dict(tickmode='array', tickvals=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90],ticktext=['(-10 to 0)', '(0 to 10)', '(10 to 20)', '(20 to 30)', '(30 to 40)','(40 to 50)', '(50 to 60)', '(60 to 70)', '(70 to 80)', '(80 to 90)','(90 to 100)']), "humidity": dict(tickmode = 'array', tickvals = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1.0], ticktext = ['(-0.1 to 0)', '(0 to 0.1)', '(0.1 to 0.2)', '(0.2 to 0.3)', '(0.3 to 0.4)', '(0.4 to 0.5)','(0.5 to 0.6)','(0.6 to 0.7)','(0.7 to 0.8)','(0.8 to 0.9)', '(0.9 to 1)'])}
+        df = pd.read_csv(filename, names=[str(weather), 'power'])
+        fig2 = px.box(df, x=str(weather), y='power',title=title)
+        fig2.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig2.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+        fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title=xaxis_title_dict[str(weather)],yaxis_title="Power(kW)",xaxis=xaxis_tick_dict[str(weather)])
+
+        return [fig1,fig2]
 
 if __name__ == "__main__":
     app.run_server(debug=True)
