@@ -6,12 +6,6 @@ from dash.exceptions import PreventUpdate
 from readers import *
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
-import csv,os
-from pathlib import Path
-import plotly.express as px
-import pandas as pd
-import math
-from abs_path import return_abs_path,return_abs_path2
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
