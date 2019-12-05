@@ -40,6 +40,13 @@ year_options = {
     "HomeH": ["2016"]
 }
 
+home_options_task3 = {
+    "2014":["HomeA","HomeB","HomeC","HomeF"],
+    "2015":["HomeA","HomeB","HomeC","HomeF","HomeG"],
+    "2016":["HomeA","HomeB","HomeC","HomeF","HomeG","HomeH"]
+
+}
+
 color_list = [
     '#1f77b4',  # muted blue
     '#ff7f0e',  # safety orange
@@ -249,15 +256,13 @@ html.Div([
 def update_comps(home_name):
     return [{'label': i, 'value': i} for i in year_options[home_name]], [{'label': i, 'value': i} for i in
                                                                          app_options[home_name]]
-'''
+#Options callback for task 3
 @app.callback(
-    [Output("drop-down-year-task3", "options"),
-     Output("drop-down-apps-task3", "options")],
-    [Input("drop-down-homes-task3", "value")])
-def update_comps(home_name):
-    return [{'label': i, 'value': i} for i in year_options[home_name]], [{'label': i, 'value': i} for i in
-                                                                        app_options[home_name]]
-'''
+    [Output("drop-down-homes-task3", "options")],
+    [Input("drop-down-year-task3", "value")])
+def update_comps(year):
+    return [[{'label': i, 'value': i} for i in home_options_task3[year]]]
+
 # Task callback for Task 4
 @app.callback(
     [Output('Vis-1', 'figure'),
