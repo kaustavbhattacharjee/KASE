@@ -98,6 +98,53 @@ app.layout = html.Div([
         ]),
         html.Br(),
     ]),
+
+    html.Div([
+        html.Hr(),
+        html.H2("Task3"),
+        html.Div(children="This task studies the power consumption of different appliances across different time parameters. This study "
+                          "contains data of appliances like furnace, refrigerator etc., across three years (2014, "
+                          "2015, 2016)", style={'font-style': 'normal'}),
+        html.Br(),
+
+        html.Div(children="Years:", style={'font-style': 'italic'}),
+        dcc.Dropdown(
+            id="drop-down-year-task3",
+            style={'color': '#000000', 'width': '300px'},
+            options=[
+                {'label': '2014', 'value': '2014'},
+                {'label': '2015', 'value': '2015'},
+                {'label': '2016', 'value': '2016'}],
+            value="2016"
+        ),
+        html.Div(children="Homes:", style={'font-style': 'italic'}),
+        dcc.Dropdown(
+            id="drop-down-homes-task3",
+            style={'color': '#000000', 'width': '300px'},
+            value='HomeA',
+            options=[
+                {'label': 'Home A', 'value': 'HomeA'},
+                {'label': 'Home B', 'value': 'HomeB'},
+                {'label': 'Home C', 'value': 'HomeC'},
+                {'label': 'Home F', 'value': 'HomeF'},
+                {'label': 'Home G', 'value': 'HomeG'},
+                {'label': 'Home H', 'value': 'HomeH'}
+            ]
+        ),
+        html.Br(),
+        html.Hr(style={'border-style': 'dotted'}),
+        html.H4("Primary Visualization"),
+        html.Div([
+            dcc.Graph(
+                id='Vis-3-1',
+            ),
+            html.Br(),
+            html.H4("Alternative Visualization"),
+            dcc.Graph(
+                id='Vis-3-2',
+            )
+        ])
+    ]),
     html.Div([
         html.Hr(),
         html.H2("Task4"),
@@ -166,8 +213,16 @@ app.layout = html.Div([
 def update_comps(home_name):
     return [{'label': i, 'value': i} for i in year_options[home_name]], [{'label': i, 'value': i} for i in
                                                                          app_options[home_name]]
-
-
+'''
+@app.callback(
+    [Output("drop-down-year-task3", "options"),
+     Output("drop-down-apps-task3", "options")],
+    [Input("drop-down-homes-task3", "value")])
+def update_comps(home_name):
+    return [{'label': i, 'value': i} for i in year_options[home_name]], [{'label': i, 'value': i} for i in
+                                                                        app_options[home_name]]
+'''
+# Task callback for Task 4
 @app.callback(
     [Output('Vis-1', 'figure'),
      Output("Vis-2", "figure")],
@@ -255,7 +310,7 @@ def update_graph(home_name, year, apps, weather):
 
     return fig_1, fig_2
 
-
+# Task callback for Task 2
 @app.callback(
     [Output('Vis-2-1', 'figure'),
      Output("Vis-2-2", "figure")],
@@ -323,6 +378,26 @@ def update_graph(year, weather):
                            yaxis_title="Power(kW)", xaxis=xaxis_tick_dict[str(weather)])
 
         return [fig1, fig2]
+
+#Task callback for Task 3
+@app.callback(
+    [Output('Vis-3-1', 'figure'),
+     Output("Vis-3-2", "figure")],
+    [Input("drop-down-year-task3", "value"),
+     Input("drop-down-homes-task3", "value")],
+)
+def update_graph(year, home):
+    filename = "visualizations/Task3_" + str(home) + "_" + str(year) + ".csv"
+    title = "Total Power Consumption across different appliances in  " + str(home) + "(" + str(year) + ")"
+    df = pd.read_csv(filename, names=["Appliance", 'Power'])
+    fig1 = px.bar(df, x="Appliance", y='Power', title=title, text="Power")
+    fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+    fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+    fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title="Appliances",yaxis_title="Power(kW)")
+
+
+
+    return [fig1, fig1]
 
 
 if __name__ == "__main__":
