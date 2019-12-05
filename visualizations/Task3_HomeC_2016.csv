@@ -1,0 +1,23 @@
+﻿Appliance,Power
+Furnace 2 [kW],68924.39562
+Furnace 1 [kW],49993.06233
+Home office [kW],40961.27797
+gen [kW]_y,38412.76483
+Solar [kW]_y,38412.76483
+Solar [kW]_x,36039.2356
+Fridge [kW],32026.7106
+Barn [kW]_y,29493.6337
+Barn [kW]_x,27012.8932
+Wine cellar [kW],21233.07932
+Living room [kW],17794.47672
+LivingRoomOutlets [kW],16074.89828
+Dishwasher [kW],15806.40645
+Well [kW]_y,7882.163851
+Garage door [kW],7124.847316
+Well [kW]_x,6794.329518
+Microwave [kW]_y,5534.440218
+Microwave [kW]_x,4997.171216
+Kitchen 14 [kW],3539.01153
+Kitchen 12 [kW],1388.448483
+WasherDrier [kW],1067.349869
+Kitchen 38 [kW],4.71858523

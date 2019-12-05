@@ -1,0 +1,21 @@
+﻿Appliance,Power
+Family_Rm [kW],7962.143633
+WaterHeater [kW],6581.42378
+WaterHeater1 [kW],5125.786369
+Furnace [kW],3174.737027
+Refrigerator [kW],2478.667262
+Dryer [kW],2092.576275
+Front_Bdrm [kW],2042.017299
+WaterHeater2 [kW],1351.722362
+Master_Bdrm [kW],1196.130464
+Basement [kW],1169.964785
+Guest_Bdrm_SmkDet [kW],981.2839223
+Kit_Half-Bath_Foyer [kW],686.7851946
+Dishwasher_Disposal [kW],532.9657088
+Kit_StoveWall [kW],334.4903689
+Microwave [kW],274.0619378
+Washing_Machine [kW],273.4636167
+Kit_SinkWall [kW],270.72037
+WaterHeater3 [kW],124.1564311
+Garage_E [kW],32.20778203
+Garage_W [kW],22.11364424
