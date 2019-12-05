@@ -431,7 +431,11 @@ def update_graph(year, home):
     fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
     fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title="Appliances",yaxis_title="Power(kW)")
 
-    return [fig1, fig1]
+    fig2 = px.scatter(df, x="Appliance", y='Power', title=title)
+    fig2.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+    fig2.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+    fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title="Appliances", yaxis_title="Power(kW)")
+    return [fig1, fig2]
 
 
 #Task callback for Task 1
@@ -452,13 +456,13 @@ def update_graph(year, option):
 
         return [fig1]
     else:
-        #filename = "visualizations/task1_" + str(option) + "_" + str(year) + ".csv"
-        filename = "visualizations/task1_time_of_the_day" + "_" + str(year) + ".csv"
-        title = "Cumulative Power Consumption during different time of the day " + "(" + str(year) + ")"
-        df = pd.read_csv(filename, names=["Time of the Day (in Hrs)", 'Power(kW)', 'Year'])
-        fig1 = px.line(df, x='Time of the Day (in Hrs)', y='Power(kW)', color='Year', title=title)
-        fig1.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
-        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+        filename = "visualizations/task1_" + str(option) + "_" + str(year) + ".csv"
+        #filename = "visualizations/task1_time_of_the_day" + "_" + str(year) + ".csv"
+        title = "Average Power Consumption during different seasons " + "(" + str(year) + ")"
+        df = pd.read_csv(filename, names=["Seasons", 'Power(kW)'])
+        fig1 = px.bar(df, x='Seasons', y='Power(kW)',  title=title,text="Power(kW)")
+        fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
         fig1.update_layout(font=dict(family="Georgia", color="black"))
 
         return [fig1]
