@@ -42,8 +42,8 @@ year_options = {
 
 home_options_task3 = {
     "2014":["HomeA","HomeB","HomeC","HomeF"],
-    "2015":["HomeA","HomeB","HomeC","HomeF","HomeG"],
-    "2016":["HomeA","HomeB","HomeC","HomeF","HomeG","HomeH"]
+    "2015":["HomeA","HomeB","HomeC","HomeF"],
+    "2016":["HomeA","HomeB","HomeC","HomeD","HomeF"]
 
 }
 
