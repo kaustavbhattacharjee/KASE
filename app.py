@@ -56,7 +56,43 @@ app.title = "Energy Consumption -  Team KASE"
 app.layout = html.Div([
     html.H1(children="A Study on Energy Consumption - Team KAS&E", style={'textAlign': 'center'}),
     html.Hr(),
+html.Div([
+        html.H2("Task1"),
+        html.Div(children="This task studies the power consumption of apartments across different time parameters "
+                          "This study contains data of 114 apartments "
+                          "across three years (2014, 2015, 2016)", style={'font-style': 'normal'}),
+        html.Br(),
+        html.Div(children="Years:", style={'font-style': 'italic'}),
+        dcc.Dropdown(
+            id="drop-down-year-task1",
+            style={'color': '#000000', "width": "300px"},
+            options=[
+                {'label': '2014', 'value': '2014'},
+                {'label': '2015', 'value': '2015'},
+                {'label': '2016', 'value': '2016'}],
+            value="2014"),
+        html.Br(),
+        html.Div(children="Time Parameters:", style={'font-style': 'italic'}),
+        dcc.RadioItems(
+            id="radio-option-task1",
+            options=[
+                {'label': 'Time of the day', 'value': 'time_of_the_day'},
+                {'label': 'Seasons', 'value': 'seasons'}
+            ],
+            value="time_of_the_day"),
+        html.Br(),
+        html.Hr(style={'border-style': 'dotted'}),
+        html.H4("Visualization"),
+        html.Div([
+            dcc.Graph(
+                id='Vis-1-1',
+            )
+        ]),
+        html.Br(),
+        html.Br(),
+    ]),
     html.Div([
+        html.Hr(),
         html.H2("Task2"),
         html.Div(children="This task studies the power consumption of apartments across different weather parameters "
                           "like temperature, humidity and weather summary. This study contains data of 114 apartments "
@@ -395,9 +431,37 @@ def update_graph(year, home):
     fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
     fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title="Appliances",yaxis_title="Power(kW)")
 
-
-
     return [fig1, fig1]
+
+
+#Task callback for Task 1
+@app.callback(
+    [Output('Vis-1-1', 'figure')],
+    [Input("drop-down-year-task1", "value"),
+     Input("radio-option-task1", "value")],
+)
+def update_graph(year, option):
+    if(option == "time_of_the_day"):
+        filename = "visualizations/task1_" + str(option) + "_" + str(year) + ".csv"
+        title = "Cumulative Power Consumption during different time of the day " + "(" + str(year) + ")"
+        df = pd.read_csv(filename, names=["Time of the Day (in Hrs)", 'Power(kW)', 'Year'])
+        fig1 = px.line(df, x='Time of the Day (in Hrs)', y='Power(kW)', color='Year',title=title)
+        fig1.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+        fig1.update_layout(font=dict(family="Georgia", color="black"))
+
+        return [fig1]
+    else:
+        #filename = "visualizations/task1_" + str(option) + "_" + str(year) + ".csv"
+        filename = "visualizations/task1_time_of_the_day" + "_" + str(year) + ".csv"
+        title = "Cumulative Power Consumption during different time of the day " + "(" + str(year) + ")"
+        df = pd.read_csv(filename, names=["Time of the Day (in Hrs)", 'Power(kW)', 'Year'])
+        fig1 = px.line(df, x='Time of the Day (in Hrs)', y='Power(kW)', color='Year', title=title)
+        fig1.update_xaxes(ticks="inside", dtick=1, title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
+        fig1.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
+        fig1.update_layout(font=dict(family="Georgia", color="black"))
+
+        return [fig1]
 
 
 if __name__ == "__main__":
