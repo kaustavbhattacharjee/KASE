@@ -1,27 +1,27 @@
-﻿AC [kW],4467.961772
-old usage [kW],2665.402091
-Fridge [kW],2512.24507
-Guest Bedroom / Media Room [kW],2241.445702
-Furnace [kW],2103.675762
-Living room &amp; Kitchen Lights [kW],1986.551447
-MBed + KBed outlets [kW],1396.370603
-Fridge (R) [kW],1266.460301
-Utility Rm + Basement Bath [kW],745.7866372
-MBed KBed Lights &amp;  MasterBath  [kW],637.2081272
-Dryer + egauge [kW],565.2116266
-Home office [kW],424.3001076
-Dishwasher [kW],361.8476774
-Kitchen counter [kW],346.8223826
-First floor [kW],341.5810271
-First Floor lights [kW],338.6072672
-Microwave [kW],256.5719704
-Dining room [kW],196.4412736
-Cellar Lights [kW],173.4420122
-Microwave (R) [kW],142.4218456
-Bath GFI (1st &amp; 2nd floor bath) [kW],105.5918948
-Dining room (R) [kW],97.17496109
-Garage outlets [kW],93.74350555
-Home Office (R) [kW],87.4913022
-Washer [kW],77.41328998
-Tub Whirpool [kW],21.83944437
-Panel GFI (central vac) [kW],6.126216156
+﻿AC ,4467.961772
+old usage ,2665.402091
+Fridge ,2512.24507
+Guest Bedroom / Media Room ,2241.445702
+Furnace ,2103.675762
+Living room &amp; Kitchen Lights ,1986.551447
+MBed + KBed outlets ,1396.370603
+Fridge (R) ,1266.460301
+Utility Rm + Basement Bath ,745.7866372
+MBed KBed Lights &amp;  MasterBath  ,637.2081272
+Dryer + egauge ,565.2116266
+Home office ,424.3001076
+Dishwasher ,361.8476774
+Kitchen counter ,346.8223826
+First floor ,341.5810271
+First Floor lights ,338.6072672
+Microwave ,256.5719704
+Dining room ,196.4412736
+Cellar Lights ,173.4420122
+Microwave (R) ,142.4218456
+Bath GFI (1st &amp; 2nd floor bath) ,105.5918948
+Dining room (R) ,97.17496109
+Garage outlets ,93.74350555
+Home Office (R) ,87.4913022
+Washer ,77.41328998
+Tub Whirpool ,21.83944437
+Panel GFI (central vac) ,6.126216156
