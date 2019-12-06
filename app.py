@@ -19,14 +19,15 @@ app_options = {
     "HomeA": ["FurnaceHRV [kW]", "Refrigerator [kW]", "KitchenDenLights [kW]", "DishwasherDisposalSinkLight [kW]",
               "OfficeLights [kW]", "CellarOutlets [kW]", "Dryer [kW]", "BasementOutdoorOutlets [kW]"],
     "HomeB": ["Grid [kW]", "AC [kW]", "Furnace [kW]", "Utility Rm + Basement Bath [kW]", "Home Office (R) [kW]",
-              "Home office [kW]", "Guest Bedroom / Media Room [kW]"],
+              "Home office [kW]", "Guest Bedroom / Media Room [kW]", "Fridge [kW]"],
     "HomeC": ["LivingRoomOutlets [kW]", "House overall [kW]", "Furnace 1 [kW]", "Furnace 2 [kW]", "Home office [kW]",
               "Fridge [kW]", "Wine cellar [kW]", "Living room [kW]"],
     "HomeF": ["WaterHeater [kW]", "Refrigerator [kW]", "Furnace [kW]", "Family_Rm [kW]", "Dryer [kW]", "WaterHeater1 "
                                                                                                        "[kW]",
               "WaterHeater2 [kW]", "WaterHeater3 [kW]"],
+    "HomeD": ["HousePanel [kW]", "FreshAirVentilation [kW]", "LivingRoomReceptacles [kW]", "WashingMachine [kW]", "WorkshopReceptacleBathHeater [kW]", "Basement&amp;HallLighting [kW]", "GuestHouseBathroom [kW]", "GuestHouseBedroom [kW]"],
     "HomeG": ["HVAC air handler [kW]", "Water pump [kW]", "Range oven [kW]", "Electronics closet [kW]", "Hot tub [kW]",
-              "Wall oven [kW] ", "ERV + humidifier + fountain [kW]", "DL bedroom outlets [kW]"],
+              "Wall oven [kW]", "ERV + humidifier + fountain [kW]", "DL bedroom outlets [kW]"],
     "HomeH": ["Kitchen Outlet/Espresso (32) [kW]", "Dishwasher (17) [kW]", "Kitchen (39) [kW]", "Oven (7+5) [kW]",
               "Dryer (36+34) [kW]", "Basement/Dehumidifier (31) [kW]", "Dining Room (15) [kW]",
               "1st Floor Bedroom (37) [kW]"]
@@ -35,6 +36,7 @@ year_options = {
     "HomeA": ["2014", "2015", "2016"],
     "HomeB": ["2014", "2015", "2016"],
     "HomeC": ["2014", "2015", "2016"],
+    "HomeD": ["2015", "2016"],
     "HomeF": ["2014", "2015", "2016"],
     "HomeG": ["2015", "2016"],
     "HomeH": ["2016"]
@@ -217,6 +219,7 @@ html.Div([
                 {'label': 'Home A', 'value': 'HomeA'},
                 {'label': 'Home B', 'value': 'HomeB'},
                 {'label': 'Home C', 'value': 'HomeC'},
+                {'label': 'Home D', 'value': 'HomeD'},
                 {'label': 'Home F', 'value': 'HomeF'},
                 {'label': 'Home G', 'value': 'HomeG'},
                 {'label': 'Home H', 'value': 'HomeH'}
