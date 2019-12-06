@@ -1,21 +1,16 @@
 ﻿Furnace 2 ,68924.39562
 Furnace 1 ,49993.06233
 Home office ,40961.27797
-gen _y,38412.76483
-Solar _y,38412.76483
-Solar _x,36039.2356
+Solar,38412.76483
 Fridge ,32026.7106
-Barn _y,29493.6337
-Barn _x,27012.8932
+Barn,29493.6337
 Wine cellar ,21233.07932
 Living room ,17794.47672
 LivingRoomOutlets ,16074.89828
 Dishwasher ,15806.40645
-Well _y,7882.163851
 Garage door ,7124.847316
-Well _x,6794.329518
-Microwave _y,5534.440218
-Microwave _x,4997.171216
+Well,6794.329518
+Microwave,5534.440218
 Kitchen 14 ,3539.01153
 Kitchen 12 ,1388.448483
 WasherDrier ,1067.349869

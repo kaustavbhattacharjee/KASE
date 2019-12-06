@@ -1,5 +1,4 @@
 ﻿DuctHeaterHRV ,7246.711829
-MasterOutlets _y,5137.547574
 MasterLights ,5063.263679
 ElectricRange ,3595.519259
 FurnaceHRV ,2850.327671
@@ -14,7 +13,7 @@ GarageMudroomLights ,1372.691967
 CellarOutlets ,1163.790883
 DishwasherDisposalSinkLight ,1088.105542
 MasterBedBathLights ,1006.639122
-MasterOutlets _x,865.8268689
+MasterOutlets,865.8268689
 MasterBathOutlets ,808.7415498
 DenOutlets ,727.5361011
 MudroomOutlets ,620.9930468
