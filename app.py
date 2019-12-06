@@ -178,15 +178,10 @@ html.Div([
         ),
         html.Br(),
         html.Hr(style={'border-style': 'dotted'}),
-        html.H4("Primary Visualization"),
+        html.H4("Visualization"),
         html.Div([
             dcc.Graph(
                 id='Vis-3-1',
-            ),
-            html.Br(),
-            html.H4("Alternative Visualization"),
-            dcc.Graph(
-                id='Vis-3-2',
             )
         ])
     ]),
@@ -425,8 +420,7 @@ def update_graph(year, weather):
 
 #Task callback for Task 3
 @app.callback(
-    [Output('Vis-3-1', 'figure'),
-     Output("Vis-3-2", "figure")],
+    [Output('Vis-3-1', 'figure')],
     [Input("drop-down-year-task3", "value"),
      Input("drop-down-homes-task3", "value")],
 )
@@ -438,12 +432,13 @@ def update_graph(year, home):
     fig1.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
     fig1.update_yaxes(title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
     fig1.update_layout(font=dict(family="Georgia", color="black"), xaxis_title="Appliances",yaxis_title="Power(kW)")
-
+    '''
     fig2 = px.scatter(df, x="Appliance", y='Power', title=title)
     fig2.update_xaxes(ticks="inside", title_font=dict(family='Georgia', color='black'),tickfont=dict(family='Georgia', color='black'))
     fig2.update_yaxes(title_font=dict(family='Georgia', color='black'), tickfont=dict(family='Georgia', color='black'))
     fig2.update_layout(font=dict(family="Georgia", color="black"), xaxis_title="Appliances", yaxis_title="Power(kW)")
-    return [fig1, fig2]
+    '''
+    return [fig1]
 
 
 #Task callback for Task 1
